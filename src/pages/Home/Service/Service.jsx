@@ -1,8 +1,9 @@
 import {useState, useEffect} from 'react'
+import ServiceCard from './ServiceCard';
 const Service = () => {
     const [services, setServices] = useState([]);
     useEffect( () => {
-        fetch('services.json')
+        fetch('http://localhost:5000/services')
         .then(res => res.json())
         .then(data => setServices(data))
     },[])
@@ -13,8 +14,10 @@ const Service = () => {
                 <h1 className="text-3xl text-black font-bold">Our Service Area</h1>
                 <p>the majority have suffered alteration in some form, by injected humour, or randomised <br /> words which dont look even slightly believable. </p>
             </div>
-            <div>
-                <p>{services.length}</p>
+            <div className='grid grid-cols-3 mt-8 gap-3'>
+                {
+                    services.map(crd => <ServiceCard key={crd._id} data={crd}></ServiceCard>)
+                }
             </div>
         </div>
     );
