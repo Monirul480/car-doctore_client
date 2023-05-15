@@ -1,30 +1,33 @@
 import img from "../../assets/images/login/login.svg";
-import {Link} from 'react-router-dom'
-import {useContext} from 'react';
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useContext } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
-
-
+import SocialLogin from "../Home/Home/Shared/SocialLogin";
 
 const SignUp = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
 
-    const {createUser} = useContext(AuthContext);
+  const { createUser } = useContext(AuthContext);
 
-    const handleSignUp = event => {
-        event.preventDefault();
-        const from = event.target;
-        // const name = from.name.value;
-        const email = from.email.value;
-        const password = from.password.value;
-        // console.log(name, email, password);
-        createUser(email, password)
-        .then(result => {
-            const user = result.user;
-            console.log(user);
-        })
-        .catch(error => console.log(error))
-    }
-    return (
-        <div className="hero min-h-screen bg-base-200">
+  const handleSignUp = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    // const name = from.name.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    // console.log(name, email, password);
+    createUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        navigate(from, {replace: true})
+      })
+      .catch((error) => console.log(error));
+  };
+  return (
+    <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row">
         <div className="text-center w-1/2 mr-12">
           <img src={img} alt="" />
@@ -61,7 +64,7 @@ const SignUp = () => {
                   <span className="label-text font-bold">Confirm Password</span>
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   name="password"
                   placeholder="Your password"
                   required
@@ -81,12 +84,18 @@ const SignUp = () => {
                 />
               </div>
             </form>
-            <p className="text-center my-4">Already have an account?  <Link className="text-orange-600" to='/login'>Login</Link></p>
+            <p className="text-center my-4">
+              Already have an account?{" "}
+              <Link className="text-orange-600" to="/login">
+                Login
+              </Link>
+            </p>
+            <SocialLogin></SocialLogin>
           </div>
         </div>
       </div>
     </div>
-    );
+  );
 };
 
 export default SignUp;

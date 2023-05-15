@@ -27,7 +27,7 @@ console.log(_id);
         price: price
     }
 
-    fetch(`http://localhost:5000/bookings`,{
+    fetch(`https://car-doctor-server-monirul480.vercel.app/bookings`,{
       method: 'POST',
       headers: {
         "content-type": 'application/json'

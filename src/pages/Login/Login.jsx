@@ -1,23 +1,31 @@
 import img from "../../assets/images/login/login.svg";
-import {Link} from 'react-router-dom'
+import {Link, useLocation, useNavigate} from 'react-router-dom'
 import {useContext} from 'react';
 import { AuthContext } from "../../Providers/AuthProvider";
+import SocialLogin from "../Home/Home/Shared/SocialLogin";
 
 const Login = () => {
 
     const {signIn} = useContext(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const from = location.state?.from?.pathname || '/';
+
+    
 
     const handleLogin = event => {
         event.preventDefault();
-        const from = event.target;
+        const form = event.target;
         // const name = from.name.value;
-        const email = from.email.value;
-        const password = from.password.value;
+        const email = form.email.value;
+        const password = form.password.value;
         // console.log(name, email, password);
         signIn(email, password)
         .then(result => {
             const user = result.user;
-            console.log(user);
+            console.log(user.email);
+            navigate(from, { replace: true })
         })
         .catch(error => console.log(error))
     }
@@ -49,7 +57,7 @@ const Login = () => {
                   <span className="label-text font-bold">Confirm Password</span>
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   name="password"
                   required
                   placeholder="Confirm password"
@@ -70,6 +78,7 @@ const Login = () => {
               </div>
             </form>
             <p className="text-center my-4">New to Car Doctors? <Link className="text-orange-600" to='/signup'>Sign Up</Link></p>
+            <SocialLogin>q</SocialLogin>
           </div>
         </div>
       </div>
